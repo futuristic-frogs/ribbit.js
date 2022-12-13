@@ -1,0 +1,14 @@
+.github
+.vscode
+.yarn
+docs
+/src
+.eslintrc.json
+.gitignore
+.npmignore
+.yarnrc.yml
+tsconfig.json
+*.tsbuildinfo
+.DS_Store
+*.pem
+.env*

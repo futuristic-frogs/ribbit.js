@@ -1,0 +1,65 @@
+{
+  "name": "@ffstudios/ribbit.js",
+  "version": "0.1.0-alpha0",
+  "description": "A simple and modern canvas game framework",
+  "license": "MIT",
+  "author": {
+    "name": "Futuristic Frog Studios",
+    "url": "https://github.com/futuristic-frogs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/futuristic-frogs/ribbit.js.git"
+  },
+  "keywords": [
+    "canvas",
+    "game",
+    "framework",
+    "engine",
+    "typescript",
+    "2d"
+  ],
+  "bugs": {
+    "url": "https://github.com/futuristic-frogs/ribbit.js/issues"
+  },
+  "packageManager": "yarn@3.3.0",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/src/index.d.mts",
+      "default": "./dist/src/index.mjs"
+    },
+    "./components": {
+      "types": "./dist/src/components/index.d.mts",
+      "default": "./dist/src/components/index.mjs"
+    },
+    "./macros": {
+      "types": "./dist/src/macros/index.d.mts",
+      "default": "./dist/src/macros/index.mjs"
+    },
+    "./objects": {
+      "types": "./dist/src/objects/index.d.mts",
+      "default": "./dist/src/objects/index.mjs"
+    },
+    "./*": {
+      "types": "./dist/src/*.d.mts",
+      "default": "./dist/src/*.mjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "build": "tsc",
+    "lint": "eslint src",
+    "docs": "typedoc src"
+  },
+  "dependencies": {
+    "nanoid": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/eslint": "^8",
+    "@wiisportsresorts/eslint-config": "^1.2.0",
+    "eslint": "^8.29.0",
+    "typedoc": "^0.23.22",
+    "typescript": "^4.9.4"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "extends": "@wiisportsresorts/eslint-config",
+  "ignorePatterns": ["dist/**"],
+  "rules": {
+    "generator-star-spacing": "off",
+    "space-before-function-paren": "off",
+    "no-dupe-class-members": "off",
+    "no-undef": "off",
+    "no-useless-constructor": "off",
+    "@typescript-eslint/member-delimiter-style": "off",
+    "@typescript-eslint/no-dynamic-delete": "off"
+  }
+}
