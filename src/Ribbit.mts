@@ -141,6 +141,13 @@ export class Ribbit {
     const scene = SceneOrClass instanceof Scene ? SceneOrClass : new SceneOrClass(this, ...args)
     this.#log?.(`registering scene ${scene}`)
     this.scenes.add(scene)
+
+    if (!this.#activeScene) {
+      this.activate(scene)
+    }
+
+    scene.init()
+
     return scene
   }
 
@@ -150,6 +157,12 @@ export class Ribbit {
   removeScene(scene: Scene): void {
     this.#log?.(`unregistering scene ${scene}`)
     this.scenes.remove(scene)
+
+    if (this.#activeScene === scene) {
+      this.#activeScene = undefined
+    }
+
+    scene.destroy()
   }
 
   /**
@@ -193,13 +206,18 @@ export class Ribbit {
    * Select a scene to be the active scene.
    * @param scene The scene or ID of the scene to select.
    */
-  select(scene: Scene | string): void {
-    this.#log?.(`selecting scene ${scene}`)
+  activate(scene: Scene | string): void {
+    this.#log?.(`activating scene ${scene}`)
+    const lastScene = this.#activeScene
+
     if (typeof scene === 'string') {
       this.#activeScene = this.scenes.get(scene)
     } else {
       this.#activeScene = scene
     }
+
+    lastScene?.deactiveate()
+    this.#activeScene?.activate()
   }
 
   /**

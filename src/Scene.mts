@@ -17,6 +17,9 @@ export class Scene extends RibbitObject {
 
   /**
    * Create a new scene.
+   *
+   * Note: adding GameObjects and other initialization logic should be done in
+   * the `init` method, not in the constructor.
    */
   constructor(ribbit: Ribbit) {
     super(ribbit, 's')
@@ -46,8 +49,39 @@ export class Scene extends RibbitObject {
         : new ObjectOrClass(this.ribbit, args[0], ...args.slice(1))
     this.log?.(`adding object ${object}`)
     this.objects.add(object)
+
+    object.init(this)
+
     return object
   }
+
+  /**
+   * Called when this scene is initialized (i.e. when it is added to the game).
+   * Add GameObjects, initialize state, etc. here.
+   */
+  init(): void {}
+
+  /**
+   * Called when this scene is destroyed (i.e. when it is removed from the
+   * game). Perform any necessary cleanup here.
+   */
+  destroy(): void {}
+
+  /**
+   * Called when this scene is set as the active scene. A scene may be activated
+   * and deactivated multiple times during the course of a game. Override this
+   * method to perform any setup that needs to be done when the scene is
+   * activated.
+   */
+  activate(): void {}
+
+  /**
+   * Called when this scene is no longer the active scene. A scene may be
+   * activated and deactivated multiple times during the course of a game.
+   * Override this method to perform any cleanup that needs to be done when the
+   * scene is deactivated.
+   */
+  deactiveate(): void {}
 
   /**
    * Remove a game object from this scene.
