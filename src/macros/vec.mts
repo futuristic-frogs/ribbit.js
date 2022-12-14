@@ -25,7 +25,7 @@ interface Vec {
   /**
    * Create a new vector with random x and y values between 0 and 1.
    */
-  random(): Vec2d
+  random(scalar?: number): Vec2d
 }
 
 const macro = (x: number, y = x): Vec2d => new Vec2d(x, y)
@@ -33,7 +33,7 @@ macro.zero = new Vec2d(0, 0)
 macro.one = new Vec2d(1, 1)
 macro.x = (x: number): Vec2d => new Vec2d(x, 0)
 macro.y = (y: number): Vec2d => new Vec2d(0, y)
-macro.random = (): Vec2d => new Vec2d(Math.random(), Math.random())
+macro.random = (scalar = 1): Vec2d => new Vec2d(Math.random(), Math.random()).scale(scalar)
 
 /**
  * A macro for creating vectors.
