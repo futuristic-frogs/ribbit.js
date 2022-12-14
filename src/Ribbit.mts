@@ -87,6 +87,7 @@ export class Ribbit {
     this.#ctx.imageSmoothingEnabled = false
     if (options.debug === true || (options.debug !== false && options.debug?.engine)) {
       this.debugger = new RibbitDebugger(this)
+      this.debugger.init(null!) // special case for RibbitDebugger - doesn't belong to a scene
     }
 
     logInfo(Ribbit.version, canvas.width, canvas.height)

@@ -2,6 +2,7 @@ import { Component, ComponentCollection } from './Component.mjs'
 import { GameObjectDebugger } from './components/GameObjectDebugger.mjs'
 import { Ribbit } from './Ribbit.mjs'
 import { RibbitObject } from './RibbitObject.mjs'
+import { Scene } from './Scene.mjs'
 import { Constructor, ConstructorType } from './types.mjs'
 import { Vec2d } from './Vec2d.mjs'
 
@@ -38,6 +39,9 @@ export abstract class GameObject extends RibbitObject {
 
   /**
    * Create a new GameObject.
+   *
+   * Note: adding components and other initialization logic should be done in
+   * the `init` method, not in the constructor.
    */
   constructor(ribbit: Ribbit, pos: Vec2d) {
     super(ribbit, 'o')
@@ -77,6 +81,19 @@ export abstract class GameObject extends RibbitObject {
   }
 
   /**
+   * Called when the GameObject is initialized. Add components and other setup
+   * here.
+   * @param scene The scene that the GameObject is being added to.
+   */
+  init(scene: Scene): void {}
+
+  /**
+   * Called when the GameObject is destroyed. Perform any necessary cleanup
+   * here.
+   */
+  destroy(): void {}
+
+  /**
    * Remove a component from this GameObject by its ID.
    */
   remove(id: string): void
@@ -88,7 +105,7 @@ export abstract class GameObject extends RibbitObject {
    * Remove a component from this GameObject by its class. If there are multiple
    * components of the same class, only the first one will be removed.
    */
-  remove(componentClass: typeof Component): void
+  remove(ComponentClass: typeof Component): void
   remove(selector: string | Component | typeof Component): void {
     let component
     if (typeof selector === 'string') {
