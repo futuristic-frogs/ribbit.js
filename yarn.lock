@@ -22,9 +22,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@frogs/ribbit.js@workspace:.":
+"@ffstudios/ribbit.js@workspace:.":
   version: 0.0.0-use.local
-  resolution: "@frogs/ribbit.js@workspace:."
+  resolution: "@ffstudios/ribbit.js@workspace:."
   dependencies:
     "@types/eslint": ^8
     "@wiisportsresorts/eslint-config": ^1.2.0
