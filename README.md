@@ -1,8 +1,14 @@
 # Ribbit.js
 
+<p>
+  <img alt="npm (scoped)" src="https://img.shields.io/npm/v/@ffstudios/ribbit.js">
+  <img alt="npm type definitions" src="https://img.shields.io/npm/types/@ffstudios/ribbit.js">
+  <img alt="NPM" src="https://img.shields.io/npm/l/@ffstudios/ribbit.js">
+</p>
+
 Ribbit.js is a simple, sleek, and modern HTML game framework for 2D canvas games, written in TypeScript.
 
-🛈 Note: Ribbit.js is still in early development, and is not yet ready for production use. 
+> **Warning**: Ribbit.js is still in early development, and is not yet ready for production use. Its API is subject to change at any time.
 
 ## Installation
 
@@ -22,6 +28,10 @@ Ribbit.js is object-oriented and is built around a few core concepts:
 - Scenes can have multiple **GameObjects**, which are the basic building blocks of the game.
 - GameObjects can have multiple **Components**, which are reusable pieces of functionality that can be added to game objects.
 
+## Documentation
+
+Documentation is available at <https://futuristic-frogs.github.io/ribbit.js>.
+
 ## Example
 
 ```js
@@ -39,7 +49,9 @@ class TestScene extends Scene {
     public readonly frogCount = 10
   ) {
     super(ribbit)
+  }
 
+  init(): void {
     // add frogs
     for (let i = 0; i < frogCount; i++) {
       // create a new game object
