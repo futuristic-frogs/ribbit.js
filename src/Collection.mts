@@ -14,7 +14,7 @@ export class Collection<T extends { id: string }> {
   /**
    * A map of objects in the collection, keyed by class. This is used for quick lookups by class.
    */
-  readonly typeMap: WeakMap<new (...args: any[]) => T, Record<string, T>> = new WeakMap()
+  readonly typeMap: Map<new (...args: any[]) => T, Record<string, T>> = new Map()
 
   /**
    * Create a new collection.
@@ -69,13 +69,25 @@ export class Collection<T extends { id: string }> {
   }
 
   /**
+   * Remove an object from the collection by ID.
+   */
+  remove(id: string): void
+  /**
    * Remove an object from the collection.
    */
-  remove(object: T): void {
-    delete this.objects[object.id]
-    const Class = Object.getPrototypeOf(object).constructor
-    const typeMap = this.typeMap.get(Class)
-    delete typeMap?.[object.id]
+  remove(object: T): void
+  remove(idOrObject: string | T): void {
+    if (typeof idOrObject === 'string') {
+      delete this.objects[idOrObject]
+      for (const typeMap of this.typeMap.values()) {
+        delete typeMap[idOrObject]
+      }
+    } else {
+      delete this.objects[idOrObject.id]
+      const Class = Object.getPrototypeOf(idOrObject).constructor
+      const typeMap = this.typeMap.get(Class)
+      delete typeMap?.[idOrObject.id]
+    }
   }
 
   /**
