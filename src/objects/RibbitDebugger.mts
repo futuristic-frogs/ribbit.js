@@ -1,5 +1,6 @@
 import { GameObject } from '../GameObject.mjs'
 import { Ribbit } from '../Ribbit.mjs'
+import type { Scene } from '../Scene.mjs'
 import { Vec2d } from '../Vec2d.mjs'
 
 /**
@@ -9,8 +10,8 @@ import { Vec2d } from '../Vec2d.mjs'
  * @internal
  */
 export class RibbitDebugger extends GameObject {
-  constructor(ribbit: Ribbit) {
-    super(ribbit, Vec2d.ZERO)
+  constructor(ribbit: Ribbit, scene: Scene) {
+    super(ribbit, scene, Vec2d.ZERO)
   }
 
   #fps = 0

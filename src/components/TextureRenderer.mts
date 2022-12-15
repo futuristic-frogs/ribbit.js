@@ -1,7 +1,7 @@
 import { Component } from '../Component.mjs'
-import { GameObject } from '../GameObject.mjs'
-import { Ribbit } from '../Ribbit.mjs'
-import { Texture } from '../Texture.mjs'
+import type { GameObject } from '../GameObject.mjs'
+import type { Ribbit } from '../Ribbit.mjs'
+import type { Texture } from '../Texture.mjs'
 
 /**
  * A component that renders a texture. The object's position is the top left

@@ -1,21 +1,16 @@
-import { Ribbit } from './Ribbit.mjs'
-import { RibbitObject } from './RibbitObject.mjs'
+import type { Ribbit } from './Ribbit.mjs'
+import type { RibbitObject } from './RibbitObject.mjs'
 
 /**
- * ConstructorType represents a constructor type that takes a Ribbit instance.
+ * Constructor represents a constructor type that takes a Ribbit instance.
  */
-export type ConstructorType<Base> = new (ribbit: Ribbit, ...args: any[]) => Base
+export type Constructor<Base> = new (ribbit: Ribbit, ...args: any[]) => Base
 
 /**
- * Constructor infers the arguments and return type of a Ribbit constructor.
+ * ConstructorArgs infers the arguments of a Ribbit constructor.
  */
-export type Constructor<
+export type ConstructorArgs<
   Base extends RibbitObject,
-  T extends ConstructorType<Base> = ConstructorType<Base>,
+  T extends Constructor<Base> = Constructor<Base>,
   A extends unknown[] = []
-> = T extends new (ribbit: Ribbit, ...args: [...A, ...infer B]) => infer C
-  ? {
-      args: B
-      type: C
-    }
-  : never
+> = T extends new (ribbit: Ribbit, ...args: [...A, ...infer B]) => RibbitObject ? B : never

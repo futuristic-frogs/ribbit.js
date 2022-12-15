@@ -1,5 +1,5 @@
 import { Collection } from './Collection.mjs'
-import { Texture } from './Texture.mjs'
+import type { Texture } from './Texture.mjs'
 
 /**
  * The texture registry manages all textures in a Ribbit instance.

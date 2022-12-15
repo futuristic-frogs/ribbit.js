@@ -4,7 +4,7 @@ export * from './Component.mjs'
  * Ribbit.js includes a number of default components for basic rendering and debuggigng.
  */
 export * as components from './components/index.mjs'
-export { Logan } from './console.mjs'
+export type { Logan } from './console.mjs'
 export * from './GameObject.mjs'
 export * from './IdRegistry.mjs'
 export * from './Layer.mjs'

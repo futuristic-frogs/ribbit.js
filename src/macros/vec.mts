@@ -38,4 +38,4 @@ macro.random = (scalar = 1): Vec2d => new Vec2d(Math.random(), Math.random()).sc
 /**
  * A macro for creating vectors.
  */
-export const vec: Vec = macro
+export const vec: Vec = macro satisfies Vec

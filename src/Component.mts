@@ -1,7 +1,8 @@
 import { Collection } from './Collection.mjs'
-import { GameObject } from './GameObject.mjs'
-import { Ribbit } from './Ribbit.mjs'
+import type { GameObject } from './GameObject.mjs'
+import type { Ribbit } from './Ribbit.mjs'
 import { RibbitObject } from './RibbitObject.mjs'
+import type { Scene } from './Scene.mjs'
 
 /**
  * A component is a reusable piece of functionality that can be added to a {@link GameObject}.
@@ -10,6 +11,9 @@ export abstract class Component extends RibbitObject {
   constructor(ribbit: Ribbit, public readonly object: GameObject) {
     super(ribbit, 'c')
   }
+
+  init(scene: Scene): void {}
+  destroy(): void {}
 
   beforeRender(): void {}
   render(): void {}

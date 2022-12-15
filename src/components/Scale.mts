@@ -1,6 +1,6 @@
 import { Component } from '../Component.mjs'
-import { GameObject } from '../GameObject.mjs'
-import { Ribbit } from '../Ribbit.mjs'
+import type { GameObject } from '../GameObject.mjs'
+import type { Ribbit } from '../Ribbit.mjs'
 
 /**
  * A component that scales the object's rendering. The object's position is the

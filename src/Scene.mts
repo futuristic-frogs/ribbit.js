@@ -1,8 +1,8 @@
 import { Collection } from './Collection.mjs'
 import { GameObject } from './GameObject.mjs'
-import { Ribbit } from './Ribbit.mjs'
+import type { Ribbit } from './Ribbit.mjs'
 import { RibbitObject } from './RibbitObject.mjs'
-import { Constructor, ConstructorType } from './types.mjs'
+import type { Constructor, ConstructorArgs } from './types.mjs'
 
 /**
  * A scene is a collection of game objects. It is the main unit of organization
@@ -34,25 +34,25 @@ export class Scene extends RibbitObject {
    * @param ObjectClass The class of the game object to create.
    * @param args The arguments to pass to the game object constructor.
    */
-  add<
-    T extends ConstructorType<GameObject>,
-    U extends Constructor<GameObject, T> = Constructor<GameObject, T>
-  >(ObjectClass: T, ...args: U['args']): U['type']
+  add<T extends Constructor<GameObject>>(
+    ObjectClass: T,
+    ...args: ConstructorArgs<GameObject, T, [Scene]>
+  ): InstanceType<T>
 
-  add<
-    T extends ConstructorType<GameObject>,
-    U extends Constructor<GameObject, T> = Constructor<GameObject, T>
-  >(ObjectOrClass: GameObject | T, ...args: U['args']): U['type'] {
+  add<T extends Constructor<GameObject>>(
+    ObjectOrClass: GameObject | T,
+    ...args: ConstructorArgs<GameObject, T, [Scene]>
+  ): InstanceType<T> {
     const object =
       ObjectOrClass instanceof GameObject
         ? ObjectOrClass
-        : new ObjectOrClass(this.ribbit, args[0], ...args.slice(1))
+        : new ObjectOrClass(this.ribbit, this, ...args)
     this.log?.(`adding object ${object}`)
     this.objects.add(object)
 
     object.init(this)
 
-    return object
+    return object as InstanceType<T>
   }
 
   /**

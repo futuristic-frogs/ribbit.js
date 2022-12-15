@@ -1,10 +1,10 @@
 import { Component, ComponentCollection } from './Component.mjs'
 import { GameObjectDebugger } from './components/GameObjectDebugger.mjs'
-import { Ribbit } from './Ribbit.mjs'
+import type { Ribbit } from './Ribbit.mjs'
 import { RibbitObject } from './RibbitObject.mjs'
-import { Scene } from './Scene.mjs'
-import { Constructor, ConstructorType } from './types.mjs'
-import { Vec2d } from './Vec2d.mjs'
+import type { Scene } from './Scene.mjs'
+import type { Constructor, ConstructorArgs } from './types.mjs'
+import type { Vec2d } from './Vec2d.mjs'
 
 /**
  * A GameObject represents any object in the game world/scene. It is a container
@@ -43,7 +43,7 @@ export abstract class GameObject extends RibbitObject {
    * Note: adding components and other initialization logic should be done in
    * the `init` method, not in the constructor.
    */
-  constructor(ribbit: Ribbit, pos: Vec2d) {
+  constructor(ribbit: Ribbit, public readonly scene: Scene, pos: Vec2d) {
     super(ribbit, 'o')
     this.pos = pos
     if (
@@ -65,19 +65,22 @@ export abstract class GameObject extends RibbitObject {
    * @param args The arguments to pass to the component's constructor.
    * @returns The added component.
    */
-  add<
-    T extends ConstructorType<Component>,
-    U extends Constructor<Component, T, [GameObject]> = Constructor<Component, T, [GameObject]>
-  >(ComponentClass: T, ...args: U['args']): U['type']
+  add<T extends Constructor<Component>>(
+    ComponentClass: T,
+    ...args: ConstructorArgs<Component, T, [GameObject]>
+  ): InstanceType<T>
 
-  add(ComponentOrClass: Component | ConstructorType<Component>, ...args: any[]): Component {
+  add<T extends Constructor<Component>>(
+    ComponentOrClass: Component | T,
+    ...args: ConstructorArgs<Component, T, [GameObject]>
+  ): InstanceType<T> {
     const component =
       ComponentOrClass instanceof Component
         ? ComponentOrClass
         : new ComponentOrClass(this.ribbit, this, ...args)
     this.log?.(`registering component ${component}`)
     this.components.add(component)
-    return component
+    return component as InstanceType<T>
   }
 
   /**

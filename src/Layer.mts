@@ -1,4 +1,4 @@
-import { Ribbit } from './Ribbit.mjs'
+import type { Ribbit } from './Ribbit.mjs'
 import { RibbitObject } from './RibbitObject.mjs'
 
 /**
