@@ -1,3 +1,13 @@
+# v0.1.0-alpha2
+
+## Added
+
+- `KeyboardListener`, `Keyboard`: add basic keyboard input support
+
+## Changed
+
+- Annotate imports/exports used only as types
+
 # v0.1.0-alpha1
 
 ## Added
