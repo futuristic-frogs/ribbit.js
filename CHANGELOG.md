@@ -1,3 +1,9 @@
+# v0.1.0-alpha3
+
+## Fixed
+
+- actually export `KeyboardListener` and `Keyboard`
+
 # v0.1.0-alpha2
 
 ## Added
