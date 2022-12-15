@@ -7,6 +7,7 @@
     "skipLibCheck": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
+    "importsNotUsedAsValues": "error",
     "esModuleInterop": true,
     "moduleResolution": "nodenext",
     "resolveJsonModule": true,
@@ -15,6 +16,6 @@
     "declaration": true,
     "sourceMap": true
   },
-  "include": ["src/**/*.mts"],
+  "include": ["src/**/*.mts", "example/*.ts"],
   "exclude": ["node_modules"]
 }
