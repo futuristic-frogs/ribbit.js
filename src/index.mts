@@ -7,6 +7,7 @@ export * as components from './components/index.mjs'
 export type { Logan } from './console.mjs'
 export * from './GameObject.mjs'
 export * from './IdRegistry.mjs'
+export * from './Keyboard.mjs'
 export * from './Layer.mjs'
 /**
  * Macros are shorthand functions for creating many common Ribbit.js objects.
