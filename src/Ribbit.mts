@@ -1,13 +1,15 @@
 import packageJson from '../package.json'
 import { Collection } from './Collection.mjs'
-import { logan, logInfo } from './console.mjs'
+import { Logan, logan, logInfo } from './console.mjs'
 import { IdRegistry } from './IdRegistry.mjs'
+import { Keyboard } from './Keyboard.mjs'
 import { Layer } from './Layer.mjs'
 import { RibbitDebugger } from './objects/RibbitDebugger.mjs'
 import { Scene } from './Scene.mjs'
 import { Texture } from './Texture.mjs'
 import { TextureRegistry } from './TextureRegistry.mjs'
-import { Constructor, ConstructorType } from './types.mjs'
+import type { Constructor, ConstructorArgs } from './types.mjs'
+import { Vec2d } from './Vec2d.mjs'
 
 export interface RibbitOptions {
   /**
@@ -36,17 +38,21 @@ export class Ribbit {
    */
   readonly textureRegistry = new TextureRegistry()
 
-  readonly #ctx = this.canvas.getContext('2d', { alpha: this.options.alpha })!
+  /**
+   * The current keyboard state.
+   */
+  readonly keyboard: Keyboard
+
+  readonly #ctx: CanvasRenderingContext2D
+
+  readonly size: Vec2d
 
   /**
    * The collection of registered layers in this instance. By default, there are
    * two layers: `default` and `debug`. The `default` layer is used for all
    * objects, while the `debug` layer is used for debug information.
    */
-  readonly layers = new Collection<Layer>(
-    new Layer(this, 'default', 0),
-    new Layer(this, 'debug', 9999)
-  )
+  readonly layers: Collection<Layer>
 
   /**
    * The collection of registered scenes in this instance.
@@ -71,26 +77,53 @@ export class Ribbit {
    */
   debugger?: RibbitDebugger
 
-  #log = this.options.debug ? logan(this) : undefined
+  #log: Logan | undefined
   #shouldStop = false
   #lastTime = 0
 
+  readonly canvas: HTMLCanvasElement
+  readonly options: RibbitOptions
+
+  constructor(options: RibbitOptions & { canvas: HTMLCanvasElement })
+  constructor(canvas: HTMLCanvasElement, options: RibbitOptions)
   /**
    * Create a new Ribbit instance.
    * @param canvas The canvas element to render into.
    * @param options The options to use for this instance.
    */
   constructor(
-    public readonly canvas: HTMLCanvasElement,
-    public readonly options: RibbitOptions = {}
+    canvasOrOptions: HTMLCanvasElement | (RibbitOptions & { canvas: HTMLCanvasElement }),
+    options: RibbitOptions = {}
   ) {
-    this.#ctx.imageSmoothingEnabled = false
+    if ('canvas' in canvasOrOptions) {
+      this.canvas = canvasOrOptions.canvas
+      const options = { ...canvasOrOptions } as any
+      delete options.canvas
+      this.options = options
+    } else {
+      this.canvas = canvasOrOptions
+      this.options = options
+    }
     if (options.debug === true || (options.debug !== false && options.debug?.engine)) {
-      this.debugger = new RibbitDebugger(this)
-      this.debugger.init(null!) // special case for RibbitDebugger - doesn't belong to a scene
+      // special case for RibbitDebugger - doesn't belong to a scene
+      this.debugger = new RibbitDebugger(this, null!)
+      this.debugger.init(null!) // no scene
     }
 
-    logInfo(Ribbit.version, canvas.width, canvas.height)
+    this.#ctx = this.canvas.getContext('2d', { alpha: this.options.alpha })!
+    this.#ctx.imageSmoothingEnabled = false
+    this.size = new Vec2d(this.canvas.width, this.canvas.height)
+
+    this.#log = this.options.debug ? logan(this) : undefined
+
+    this.keyboard = new Keyboard(this)
+
+    this.layers = new Collection<Layer>(
+      new Layer(this, 'default', 0),
+      new Layer(this, 'debug', 9999)
+    )
+
+    logInfo(Ribbit.version, this.canvas.width, this.canvas.height)
   }
 
   /**
@@ -130,15 +163,15 @@ export class Ribbit {
    * @param SceneClass The scene class to instantiate.
    * @param args The arguments to pass to the scene constructor.
    */
-  addScene<
-    T extends ConstructorType<Scene>,
-    U extends Constructor<Scene, T> = Constructor<Scene, T>
-  >(SceneClass: T, ...args: U['args']): U['type']
+  addScene<T extends Constructor<Scene>>(
+    SceneClass: T,
+    ...args: ConstructorArgs<Scene, T>
+  ): InstanceType<T>
 
-  addScene<
-    T extends ConstructorType<Scene>,
-    U extends Constructor<Scene, T> = Constructor<Scene, T>
-  >(SceneOrClass: Scene | T, ...args: U['args']): U['type'] {
+  addScene<T extends Constructor<Scene>>(
+    SceneOrClass: Scene | T,
+    ...args: ConstructorArgs<Scene, T>
+  ): InstanceType<T> {
     const scene = SceneOrClass instanceof Scene ? SceneOrClass : new SceneOrClass(this, ...args)
     this.#log?.(`registering scene ${scene}`)
     this.scenes.add(scene)
@@ -149,7 +182,7 @@ export class Ribbit {
 
     scene.init()
 
-    return scene
+    return scene as InstanceType<T>
   }
 
   /**

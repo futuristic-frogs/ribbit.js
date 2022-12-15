@@ -1,5 +1,5 @@
 import { logan, Logan } from './console.mjs'
-import { Ribbit } from './Ribbit.mjs'
+import type { Ribbit } from './Ribbit.mjs'
 
 export interface RibbitObjectOptions {
   /**
